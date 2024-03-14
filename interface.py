@@ -3,8 +3,7 @@ from flet import icons, colors
 import datetime
 
 def main(page: ft.Page):
-    # basic config for app
-    page.theme_mode = ft.ThemeMode.DARK
+    # basic config for app 
     page.title = "App Departamentos"
     page.fonts = {
         "PoppinsL": "ADMIN-HUB/fonts/Poppins-Light.ttf",
@@ -13,14 +12,15 @@ def main(page: ft.Page):
         "PoppinsB": "ADMIN-HUB/fonts/Poppins-SemiBold.ttf",
         "MontserratL": "ADMIN-HUB/fonts/MontserratAlt1-Light.ttf",
     }
-    page.theme = ft.Theme(font_family="PoppinsR")
     # define a color palette
-    page.theme = ft.Theme(color_scheme_seed=colors.TEAL)
+    page.theme = ft.Theme(color_scheme_seed=colors.TEAL_100,color_scheme={"background":colors.GREY_900},font_family="PoppinsR")
+    page.bgcolor = colors.BACKGROUND
+    page.theme_mode = ft.ThemeMode.DARK
 
     def toggle_palette(e):
         if page.theme_mode == ft.ThemeMode.DARK:
             page.theme_mode = ft.ThemeMode.LIGHT
-            page.bgcolor = colors.TEAL_50
+            page.bgcolor = colors.TEAL_100
         else:
             page.theme_mode = ft.ThemeMode.DARK
             page.bgcolor = colors.BACKGROUND
@@ -33,7 +33,7 @@ def main(page: ft.Page):
     page.window_resizable = False
     page.window_maximizable = False
     page.padding = 0
-    page.window_width = 830
+    page.window_width = 1100
     page.window_height = 550
 
     # designing my own window frame
@@ -375,7 +375,7 @@ def main(page: ft.Page):
     
     row3 = ft.Row(
         [contacto_label, contacto],
-        width=420,
+        width=600,
         alignment="center",
         vertical_alignment="center",
     )
