@@ -100,8 +100,8 @@ def main(page: ft.Page):
                                                 weight="w800"
                                             ),
                                         ],
-                                        width=162,
-                                        height=35,
+                                        width=172,
+                                        height=35
                                     ),
                                 ],
                                 vertical_alignment="center",
