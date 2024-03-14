@@ -7,15 +7,24 @@ def main(page: ft.Page):
     page.title = "App Departamentos"
 
     # define a color palette
-    default_color = colors.TEAL_ACCENT_200
+    # defiine a color palette
+    page.theme = ft.Theme(
+                # color_scheme={
+                #     "primary":"grey",
+                #     "secondary": "red",
+                #     "background":"green",
+                #     "surface": "red",
+                #     "on_surface":"violet",
+                #     "surface_variant":"yellow"
+                #     }
+                color_scheme_seed=colors.TEAL)
     
     def toggle_palette(e):
         if page.theme_mode == ft.ThemeMode.DARK:
             page.theme_mode = ft.ThemeMode.LIGHT
-            page.theme = Theme(color_scheme_seed=default_color)
         else: 
             page.theme_mode = ft.ThemeMode.DARK
-            page.theme = Theme(color_scheme_seed=default_color)
+
         page.update()
 
     # editing page window
@@ -24,6 +33,8 @@ def main(page: ft.Page):
     page.window_resizable = False
     page.window_maximizable = False
     page.padding =  0
+    page.window_width = 800
+    page.window_height = 550
 
     # designing my own window frame
     # fx for exit button
@@ -56,8 +67,7 @@ def main(page: ft.Page):
             ft.TextButton("Yes", on_click=close_main),
             ft.TextButton("No", on_click=close_dlg),
         ],
-        actions_alignment=ft.MainAxisAlignment.END,
-        on_dismiss=lambda e: print("Modal dialog dismissed!"),
+        actions_alignment=ft.MainAxisAlignment.END
     )
 
     # add title and frame buttons to page
@@ -74,7 +84,9 @@ def main(page: ft.Page):
                         ]),padding=10),
                     ft.Container(
                         content= ft.Row([
-                            ft.IconButton(icons.LIGHT_MODE_ROUNDED, on_click=toggle_palette),
+                            ft.IconButton(icons.DARK_MODE_ROUNDED,disabled=True),
+                            ft.Switch(value=False,on_change=toggle_palette),
+                            ft.IconButton(icons.LIGHT_MODE_ROUNDED,disabled=True),
                             ft.Text("      "),
                             ft.IconButton(icons.MINIMIZE_ROUNDED, on_click=minimize_main),
                             ft.Text(" "),
@@ -93,24 +105,24 @@ def main(page: ft.Page):
                     ft.Row(
                         [
                         ft.Text("",height=100),
-                        ft.Text("DEPARTAMENTO",height=60),
-                        ft.IconButton(icon=icons.SEARCH_SHARP,on_click=...,bgcolor=colors.SURFACE_VARIANT)
+                        ft.Text("DEPARTAMENTO",style="titleMedium",size=30,height=60)
                         ],
                         vertical_alignment="end", 
                         alignment="center"
                         ),
-                    ft.TextField(
-                        width=150,
-                        keyboard_type="number",
-                        bgcolor=colors.SURFACE_VARIANT,
-                        focused_bgcolor= colors.TEAL_ACCENT_100,
-                        multiline=False,
-                        color="black"),
-                    ft.Divider(color=colors.SURFACE_VARIANT),
+                    ft.Stack([
+                        ft.TextField(
+                            width=150,
+                            text_align="center",
+                            text_vertical_align=-1.0,
+                            max_length= 5)
+                        ],height=65),
+                    
+                    ft.Divider()
                     ],
-                    horizontal_alignment="center",
-                    alignment="center",
-                    width=page.width
+                        horizontal_alignment="center",
+                        alignment="center",
+                        width=page.width
                 ),
         )
     )
@@ -137,67 +149,152 @@ def main(page: ft.Page):
 
     # textf1 = textfield_config("Nombre")
 
-    # here starts main content
-# here starts main content
-    col1 = ft.Column([
-                    ft.Text(value="Ocupante",text_align="center",height=50),
-                    ft.Text(value="Contacto",text_align="center",height=50),
-                    ft.Text(value="",text_align="center",height=50),
-                    ft.Text(value="mes",text_align="center",height=50),
-                    ft.Text(value="monto",text_align="center",height=50),
-                    ft.Text(value="deudas",text_align="center",height=50),
-                ],spacing="spaceBetween",width=250)
+     # "cobrar" button expands window and shows invoice options
+    global expansion
+    expansion = False
+    def expandir_ventana(e):
+        global expansion 
+        if expansion == False:
+            page.window_height = 850
+            page.window_center()
+            page.add(ft.Column([ft.Divider()]))
 
+            row3 = ft.Row([
+                            ft.Text(
+                                value="Mes Actual",
+                                height=25,
+                                width=150,
+                                text_align="center"),
+                            ft.TextField(
+                                width=200,
+                                height=50,
+                                text_align="center",
+                                ),
+                            ],width=350, alignment="spaceAround",vertical_alignment="center")
+            
+            row4_1 =  ft.Row([
+                            ft.Text(
+                                value="Monto",
+                                height=25,
+                                width=150,
+                                text_align="center"),
+                            ft.TextField(
+                                width=200,
+                                height=50,
+                                text_align="center",
+                                )
+                            ],width=350, alignment="spaceAround",vertical_alignment="center")
+            
+            row4_2=ft.Row([
+                            ft.IconButton(
+                                icons.CALCULATE,
+                                on_click=...),
+                            ft.Text(
+                                value="TOTAL",
+                                height=30,
+                                size=20),
+                            ft.TextField(
+                                width=200,
+                                height=60,
+                                text_align="center",
+                                ),
+                            ft.IconButton(
+                                icons.PRINT_ROUNDED,
+                                on_click=...
+                            )
+                            ],width=400, alignment="spaceAround",vertical_alignment="center")
+            
+            row4 = ft.Row([row4_1,row4_2], width=page.width,vertical_alignment="center")
 
-    col2 = ft.Column([
-                    ft.TextField(width=150,
-                            bgcolor=colors.SURFACE_VARIANT,
-                            focused_bgcolor= colors.TEAL_ACCENT_100,
-                            text_align="center",multiline=False,
-                            color="black",
-                            label="",
-                            ),
-                    ft.TextField(width=150,
-                            bgcolor=colors.SURFACE_VARIANT,
-                            focused_bgcolor= colors.TEAL_ACCENT_100,
-                            text_align="center",multiline=False,
-                            color="black",
-                            label="",
-                            ),
-                    ft.Text(value="",text_align="center"),
-                    ft.TextField(width=150,
-                            bgcolor=colors.SURFACE_VARIANT,
-                            focused_bgcolor= colors.TEAL_ACCENT_100,
-                            text_align="center",multiline=False,
-                            color="black",
-                            label="",
-                            ),
-                    ft.TextField(width=150,
-                            bgcolor=colors.SURFACE_VARIANT,
-                            focused_bgcolor= colors.TEAL_ACCENT_100,
-                            text_align="center",multiline=False,
-                            color="black",
-                            label="",
-                            ),
-                    ft.TextField(width=150,
-                            bgcolor=colors.SURFACE_VARIANT,
-                            focused_bgcolor= colors.TEAL_ACCENT_100,
-                            text_align="center",multiline=False,
-                            color="black",
-                            label="",
-                            ),
-                ])
+            row5= ft.Row([
+                            ft.Text(
+                                value="Deudas",
+                                height=25,
+                                width=150,
+                                text_align="center"),
+                            ft.TextField(
+                                width=200,
+                                height=50,
+                                text_align="center",
+                                ),
+                            ],width=350, alignment="spaceAround",vertical_alignment="center")
+            
+            row6 = ft.Row([ft.TextButton("PAGAR",width=200,height=40,on_click=...)], width=page.width, alignment="center")
+            
+            container3 = ft.Container(content=row3,margin=5)
+            container4 = ft.Container(content=row4,margin=5)
+            container5 = ft.Container(content=row5,margin=5)
+            container6 = ft.Container(content=row6,margin=5)
+
+            page.add(container3,container4,container5,container6)
+
+            expansion = True
+        else:
+            print("execute function")
+
+    # here starts main content  
+    row1_1 = ft.Row([
+                    ft.Text(
+                        value="Nombre",
+                        height=20),
+                    ft.TextField(
+                        width=200,
+                        height=50,
+                        text_align="center",
+                        ),
+                    ],width=400, alignment="center",vertical_alignment="center")
+
+    row1_2 = ft.Row([
+                    ft.Text(
+                        value="Fecha",
+                        height=20),
+                    ft.TextField(
+                        width=200,
+                        height=50,
+                        text_align="center",
+                        )
+                    ],width=400, alignment="center",vertical_alignment="center")
     
-
-    container = ft.Row() 
-    container.spacing= 50
-    container.alignment= "center"
-    container.vertical_alignment = "center"
+    row2_1 = ft.Row([
+                    ft.Text(
+                        value="Apellido",
+                        height=25),
+                    ft.TextField(
+                        width=200,
+                        height=50,
+                        text_align="center",
+                        ),
+                    ],width=400, alignment="center",vertical_alignment="center")
     
-    container.controls.append(col1)
-    container.controls.append(col2)
+    row2_2 = ft.Row([
+                    ft.TextButton(
+                        text="COBRAR",
+                        width=130,
+                        on_click=expandir_ventana), 
+                    ft.TextButton(
+                        text="ACTUALIZAR",
+                        width=130,
+                        on_click=...)
+                    ],width=400, alignment="center",vertical_alignment="center")
 
-    page.add(container)
+    row1 = ft.Row([row1_1,row1_2], width=page.width,vertical_alignment="center",alignment="spaceAround")
+    row2 = ft.Row([row2_1,row2_2], width=page.width,vertical_alignment="center",alignment="spaceAround")   
+    row3 = ft.Row([ft.Text(
+                        value="Contacto",
+                        height=20),
+                    ft.TextField(
+                        width=200,
+                        height=50,
+                        text_align="center",
+                        )
+                    ],width=400, alignment="center",vertical_alignment="center")
+
+    container1 = ft.Container(content=row1,margin=10)
+    container2 = ft.Container(content=row2,margin=10)
+    container3 = ft.Container(content=row3,margin=10)
+
+    page.add(container1,container2,container3)
+            
     page.update()
 
 
